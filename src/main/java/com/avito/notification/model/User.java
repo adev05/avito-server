@@ -2,10 +2,12 @@ package com.avito.notification.model;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.*;
@@ -24,16 +26,20 @@ public class User implements Serializable {
     @Column(name="username")
     private String username;
 
+    @JsonIgnore
     @Column(name="password_hash")
     private String passwordHash;
     
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "role")
     private Role role;
     
     @Column(name="created_at")
     @CreationTimestamp
     private LocalDateTime createdAt;
+
+    @OneToMany(mappedBy = "author")
+    private List<Notification> notifications;
  
     public Integer getId() {
         return id;

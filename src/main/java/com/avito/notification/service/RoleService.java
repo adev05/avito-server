@@ -22,7 +22,14 @@ public interface RoleService {
      * @param id - ID роли
      * @return - объект роли с заданным ID
      */
-    Role read(int id);
+    Role readById(int id);
+
+    /**
+     * Возвращает роль по его roleName
+     * @param roleName - roleName роли
+     * @return - объект роли с заданным ID
+     */
+    Role readByRoleName(String roleName);
  
     /**
      * Обновляет роль с заданным ID,

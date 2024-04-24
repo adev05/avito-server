@@ -3,8 +3,7 @@ DROP TABLE IF EXISTS users, user_roles, notification_types, notifications, notif
 CREATE TABLE IF NOT EXISTS user_roles
 (
     id SERIAL PRIMARY KEY,
-    role_name VARCHAR(31) NOT NULL,
-    access_level INTEGER NOt NULL DEFAULT 1
+    role_name VARCHAR(31) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS users
@@ -28,14 +27,16 @@ CREATE TABLE IF NOT EXISTS notifications
     title VARCHAR(255) NOT NULL,
     description TEXT NOT NULL,
     date TIMESTAMP DEFAULT NOW(),
-    author_id INTEGER NOT NULL REFERENCES users (id),
-    type_id INTEGER NOT NULL REFERENCES notification_types (id),
+    author INTEGER NOT NULL REFERENCES users (id),
+    type INTEGER NOT NULL REFERENCES notification_types (id),
+    roles_to INTEGER[] NOT NULL,
+    is_read BOOLEAN DEFAULT FALSE,
     created_at TIMESTAMP DEFAULT NOW()
 );
 
 CREATE TABLE IF NOT EXISTS notifications_to_roles
 (
     id SERIAL PRIMARY KEY,
-    notification_id INTEGER NOT NULL REFERENCES notifications (id),
-    role_id INTEGER NOT NULL REFERENCES user_roles (id)
+    notification INTEGER NOT NULL REFERENCES notifications (id),
+    role INTEGER NOT NULL REFERENCES user_roles (id)
 );

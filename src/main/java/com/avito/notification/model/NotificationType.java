@@ -1,7 +1,6 @@
 package com.avito.notification.model;
 
 import java.io.Serializable;
-import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -10,18 +9,18 @@ import jakarta.persistence.Entity;
 
 @Entity
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-@Table(name = "user_roles")
-public class Role implements Serializable {
+@Table(name = "notification_types")
+public class NotificationType implements Serializable {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "role_name")
-    private String roleName;
+    @Column(name = "type_name")
+    private String typeName;
 
-    @OneToMany(mappedBy = "role")
-    private List<User> users;
+    @OneToOne(mappedBy = "type")
+    private Notification notification;
 
     public Integer getId() {
         return id;
@@ -31,15 +30,11 @@ public class Role implements Serializable {
         this.id = id;   
     }
 
-    public String getRoleName() {
-        return roleName;
+    public String getTypeName() {
+        return typeName;
     } 
 
-    public void setRoleName(String roleName) {
-        this.roleName = roleName;
-    }
-
-    public List<User> getUsers() {
-        return users;
+    public void setTypeName(String typeName) {
+        this.typeName = typeName;
     }
 }

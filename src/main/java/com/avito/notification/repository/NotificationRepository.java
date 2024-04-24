@@ -1,11 +1,10 @@
 package com.avito.notification.repository;
 
-import com.avito.notification.model.Role;
+import com.avito.notification.model.Notification;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface RoleRepository extends JpaRepository<Role, Integer>  {
-    Role findByRoleName(String username);
+public interface NotificationRepository extends JpaRepository<Notification, Integer>  {
 }

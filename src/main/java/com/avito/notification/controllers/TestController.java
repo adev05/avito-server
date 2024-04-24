@@ -1,6 +1,5 @@
 package com.avito.notification.controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,18 +13,17 @@ public class TestController {
     private final UserService userService;
     private final RoleService roleService;
 
-    @Autowired
     public TestController(UserService userService, RoleService roleService) {
         this.userService = userService;
         this.roleService = roleService;
     }
     
-    @GetMapping(value = "/autoCreateUsers")
+    @GetMapping(value = "/user/create")
     public ResponseEntity<?> autoCreateUser() {
         User user = new User();
         user.setUsername("admin");
         user.setPasswordHash("admin");
-        Role role = roleService.read(1);
+        Role role = roleService.readById(1);
         user.setRole(role);
         userService.create(user);
 

@@ -24,8 +24,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User read(int id) {
+    public User readById(int id) {
         return userRepository.getReferenceById(id);
+    }
+
+    @Override
+    public User readByUsername(String username) {
+        return userRepository.findByUsername(username);
     }
 
     @Override
@@ -45,10 +50,5 @@ public class UserServiceImpl implements UserService {
             return true;
         }
         return false;
-    }
-
-    @Override
-    public User getByUsername(String username) {
-        return userRepository.findByUsername(username);
     }
 }

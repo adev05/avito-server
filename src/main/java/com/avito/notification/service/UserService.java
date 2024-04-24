@@ -18,11 +18,18 @@ public interface UserService {
     List<User> readAll();
  
     /**
-     * Возвращает клиента по его ID
-     * @param id - ID клиента
-     * @return - объект клиента с заданным ID
+     * Возвращает клиента по его id
+     * @param id - id клиента
+     * @return - объект клиента с заданным id
      */
-    User read(int id);
+    User readById(int id);
+
+    /**
+     * Возвращает клиента по его username
+     * @param username username клиента
+     * @return - объект клиента с заданным username
+     */
+    User readByUsername(String username);
  
     /**
      * Обновляет клиента с заданным ID,
@@ -39,7 +46,5 @@ public interface UserService {
      * @return - true если клиент был удален, иначе false
      */
     boolean delete(int id);
-
-    User getByUsername(String username);
  }
  
