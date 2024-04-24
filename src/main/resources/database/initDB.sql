@@ -1,7 +1,41 @@
-CREATE TABLE IF NOT EXISTS clients
+DROP TABLE IF EXISTS users, user_roles, notification_types, notifications, notifications_to_roles;
+
+CREATE TABLE IF NOT EXISTS user_roles
 (
-    id    BIGSERIAL PRIMARY KEY ,
-    name  VARCHAR(200) NOT NULL ,
-    email VARCHAR(254) NOT NULL ,
-    phone VARCHAR(20)  NOT NULL
+    id SERIAL PRIMARY KEY,
+    role_name VARCHAR(31) NOT NULL,
+    access_level INTEGER NOt NULL DEFAULT 1
+);
+
+CREATE TABLE IF NOT EXISTS users
+(
+    id SERIAL PRIMARY KEY,
+    username VARCHAR(31) NOT NULL,
+    password_hash TEXT NOT NULL,
+    role INTEGER NOT NULL REFERENCES user_roles (id),
+    created_at TIMESTAMP DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS notification_types
+(
+    id SERIAL PRIMARY KEY,
+    type_name VARCHAR(31) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS notifications
+(
+    id SERIAL PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    description TEXT NOT NULL,
+    date TIMESTAMP DEFAULT NOW(),
+    author_id INTEGER NOT NULL REFERENCES users (id),
+    type_id INTEGER NOT NULL REFERENCES notification_types (id),
+    created_at TIMESTAMP DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS notifications_to_roles
+(
+    id SERIAL PRIMARY KEY,
+    notification_id INTEGER NOT NULL REFERENCES notifications (id),
+    role_id INTEGER NOT NULL REFERENCES user_roles (id)
 );

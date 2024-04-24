@@ -1,7 +1,7 @@
 package com.avito.notification.service;
 
 import java.util.List;
-import com.avito.notification.model.User;
+import com.avito.notification.model.*;
 
 public interface UserService {
 
@@ -39,5 +39,7 @@ public interface UserService {
      * @return - true если клиент был удален, иначе false
      */
     boolean delete(int id);
+
+    User getByUsername(String username);
  }
  

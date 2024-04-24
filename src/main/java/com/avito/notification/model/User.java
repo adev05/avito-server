@@ -1,25 +1,39 @@
 package com.avito.notification.model;
 
+import java.io.Serializable;
+import java.time.LocalDateTime;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.*;
 import jakarta.persistence.Entity;
 
 
 @Entity
-@Table(name = "clients")
-public class User {
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@Table(name = "users")
+public class User implements Serializable {
     @Id
-    @Column(name = "id")
+    @Column(name="id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "name")
-    private String name;
+    @Column(name="username")
+    private String username;
 
-    @Column(name = "email")
-    private String email;
-
-    @Column(name = "phone")
-    private String phone;
+    @Column(name="password_hash")
+    private String passwordHash;
+    
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "role")
+    private Role role;
+    
+    @Column(name="created_at")
+    @CreationTimestamp
+    private LocalDateTime createdAt;
  
     public Integer getId() {
         return id;
@@ -28,28 +42,39 @@ public class User {
     public void setId(Integer id) {
         this.id = id;
     }
- 
-    public String getName() {
-        return name;
+
+    public String getUsername() {
+    	return username;
     }
- 
-    public void setUsername(String name) {
-        this.name = name;
+    
+    public void setUsername(String username) {
+    	this.username = username;
     }
- 
-    public String getPasswordHash() {
-        return email;
+    
+    public Role getRole() {
+    	return role;
     }
- 
-    public void setPasswordHash(String email) {
-        this.email = email;
+    
+    public void setRole(Role role) {
+    	this.role = role;
     }
- 
-    public String getRole() {
-        return phone;
+    
+    public LocalDateTime getCreatedAt() {
+    	return createdAt;
     }
- 
-    public void setRole(String phone) {
-        this.phone = phone;
+    
+    public void setCreatedAt(LocalDateTime createdAt) {
+    	this.createdAt = createdAt;
     }
- }
+
+    public void setPasswordHash(String password) {
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        this.passwordHash = passwordEncoder.encode(password);
+    }
+
+    public boolean checkPasswordHash(String password) {
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        return passwordEncoder.matches(password, this.passwordHash);
+    }
+    
+}

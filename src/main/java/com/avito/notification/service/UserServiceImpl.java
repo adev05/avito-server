@@ -1,6 +1,6 @@
 package com.avito.notification.service;
 
-import com.avito.notification.model.User;
+import com.avito.notification.model.*;
 import com.avito.notification.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -45,5 +45,10 @@ public class UserServiceImpl implements UserService {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public User getByUsername(String username) {
+        return userRepository.findByUsername(username);
     }
 }
