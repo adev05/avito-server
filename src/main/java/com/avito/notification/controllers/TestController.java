@@ -5,8 +5,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.avito.notification.model.*;
-import com.avito.notification.service.*;
+import com.avito.notification.model.Role;
+import com.avito.notification.model.User;
+import com.avito.notification.service.RoleService;
+import com.avito.notification.service.UserService;
 
 @RestController
 public class TestController {
@@ -20,13 +22,20 @@ public class TestController {
     
     @GetMapping(value = "/user/create")
     public ResponseEntity<?> autoCreateUser() {
-        User user = new User();
-        user.setUsername("admin");
-        user.setPasswordHash("admin");
-        Role role = roleService.readById(1);
-        user.setRole(role);
-        userService.create(user);
+        User user1 = new User();
+        user1.setUsername("admin");
+        user1.setPasswordHash("admin");
+        Role role1 = roleService.readById(1);
+        user1.setRole(role1);
+        userService.create(user1);
 
-        return new ResponseEntity<>(user, HttpStatus.OK);
+        User user2 = new User();
+        user2.setUsername("user2");
+        user2.setPasswordHash("user2");
+        Role role2 = roleService.readById(2); // assuming you have a role with id 2
+        user2.setRole(role2);
+        userService.create(user2);
+
+        return new ResponseEntity<>(user1, HttpStatus.OK);
     }
 }

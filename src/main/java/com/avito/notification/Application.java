@@ -1,16 +1,16 @@
 package com.avito.notification;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
-import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
-import com.avito.notification.model.*;
-import com.avito.notification.service.*;
-import com.corundumstudio.socketio.SocketIOServer;
-import com.corundumstudio.socketio.listener.DataListener;
-import com.avito.notification.service.*;
+import com.avito.notification.model.NotificationType;
+import com.avito.notification.model.Role;
+import com.avito.notification.model.User;
+import com.avito.notification.service.NotificationTypeService;
+import com.avito.notification.service.RoleService;
+import com.avito.notification.service.UserService;
 
 @SpringBootApplication
 @EnableScheduling
@@ -43,8 +43,8 @@ public class Application {
         //     ackRequest.sendAckData("Received your message: " + data);
         // });
     	
-        String[] roles = {"admin", "worker", "user"};
-        String[] users = {"admin", "worker", "user"};
+        String[] roles = {"admin", "employee", "user"};
+        String[] users = {"admin", "employee", "user"};
         for (int i = 0; i < 3; i++) {
             Role role = new Role();
             role.setRoleName(roles[i]);

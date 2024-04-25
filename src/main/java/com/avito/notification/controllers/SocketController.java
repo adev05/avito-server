@@ -1,5 +1,9 @@
 package com.avito.notification.controllers;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
+
 import com.avito.notification.model.Notification;
 import com.avito.notification.service.NotificationService;
 import com.avito.notification.service.NotificationTypeService;
@@ -13,10 +17,6 @@ import com.corundumstudio.socketio.listener.DataListener;
 import com.corundumstudio.socketio.listener.DisconnectListener;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 
 
 @Component
@@ -36,6 +36,7 @@ public class SocketController {
         this.namespace = server.addNamespace("/chat");
         this.namespace.addConnectListener(onConnected());
         this.namespace.addDisconnectListener(onDisconnected());
+
         this.namespace.addEventListener("createNotification", ObjectNode.class, onCreateNotification());
         this.namespace.addEventListener("send_message", String.class, sendMessage());
 
@@ -49,6 +50,8 @@ public class SocketController {
         return (client, data, ackSender) -> {
             System.out.println("Message in chat");
             log.debug("Client[{}] - Received chat message '{}'", client.getSessionId().toString(), data);
+
+            System.out.println(client.getSessionId().toString());
             
             String title = data.get("title").asText();
             String description = data.get("description").asText();
@@ -63,14 +66,33 @@ public class SocketController {
             Notification newNotification = new Notification(title, description, userService.readById(Integer.parseInt(authorId)), notificationTypeService.readById(1), rolesToInteger);
             notificationService.create(newNotification);
 
-            namespace.getBroadcastOperations().sendEvent("chat", newNotification);
+            // Collection<SocketIOClient> allClients = namespace.getAllClients();
+
+            // for (SocketIOClient currentClient : allClients) {
+            //     currentClient.sendEvent("notification", newNotification);
+            // }
+
+            // namespace.getBroadcastOperations().sendEvent("notification", newNotification);
+            // Collection<SocketIOClient> allClients = namespace.getAllClients();
+            // for (SocketIOClient currentClient : allClients) {
+            //     currentClient.sendEvent("notification", newNotification);
+            // }
+
+            namespace.getRoomOperations("/chat").sendEvent("notification", newNotification);
+
+
+            // namespace.getAllClients().forEach(action -> action.sendEvent("notification", newNotification));
+            // namespace.getBroadcastOperations().sendEvent("notification", newNotification);
         };
     }
 
     private DataListener<String> sendMessage() {
         return (client, data, ackSender) -> {
             System.out.println(client);
+
+            // hello server
             System.out.println(data);
+
             System.out.println(ackSender);
 
             log.debug("Client[{}] - Received chat message '{}'", client.getSessionId().toString(), data);
