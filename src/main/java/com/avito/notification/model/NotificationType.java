@@ -2,6 +2,7 @@ package com.avito.notification.model;
 
 import java.io.Serializable;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.*;
@@ -19,8 +20,16 @@ public class NotificationType implements Serializable {
     @Column(name = "type_name")
     private String typeName;
 
+    @JsonIgnore
     @OneToOne(mappedBy = "type")
     private Notification notification;
+
+    public NotificationType() {
+    }
+
+    public NotificationType(String typeName) {
+        this.typeName = typeName;
+    }
 
     public Integer getId() {
         return id;

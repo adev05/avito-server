@@ -15,8 +15,8 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.source>1.7</maven.compiler.source>
-    <maven.compiler.target>1.7</maven.compiler.target>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
   </properties>
 
   <dependencies>
@@ -56,6 +56,30 @@
 	    <artifactId>spring-boot-starter-websocket</artifactId>
 	    <version>3.2.5</version>
 	</dependency>
+	<dependency>
+	    <groupId>com.corundumstudio.socketio</groupId>
+	    <artifactId>netty-socketio</artifactId>
+	    <version>2.0.9</version>
+	</dependency>
+	<dependency>
+	    <groupId>org.slf4j</groupId>
+	    <artifactId>slf4j-api</artifactId>
+	    <version>2.0.13</version>
+	</dependency>
+	<dependency>
+	    <groupId>org.projectlombok</groupId>
+	    <artifactId>lombok</artifactId>
+	    <version>1.18.32</version>
+	    <scope>provided</scope>
+	</dependency>
+	
+	<dependency>
+	    <groupId>commons-io</groupId>
+	    <artifactId>commons-io</artifactId>
+	    <version>2.16.1</version>
+	</dependency>
+
+
 
 	<dependency>
 		<groupId>jakarta.persistence</groupId>
@@ -67,6 +91,19 @@
 		<artifactId>postgresql</artifactId>
 		<version>42.7.3</version>
 	</dependency>
+	
+	<dependency>
+	    <groupId>com.fasterxml.jackson.datatype</groupId>
+	    <artifactId>jackson-datatype-jsr310</artifactId>
+	    <version>2.17.0</version>
+	</dependency>
+	<dependency>
+	    <groupId>com.fasterxml.jackson.core</groupId>
+	    <artifactId>jackson-databind</artifactId>
+	    <version>2.17.0</version>
+	</dependency>
+
+
 	
   </dependencies>
 

@@ -1,8 +1,9 @@
 package com.avito.notification.model;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.util.List;
+import java.sql.Time;
+import java.sql.Timestamp;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -36,8 +37,9 @@ public class User implements Serializable {
     
     @Column(name="created_at")
     @CreationTimestamp
-    private LocalDateTime createdAt;
+    private Timestamp createdAt;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "author")
     private List<Notification> notifications;
  
@@ -65,11 +67,11 @@ public class User implements Serializable {
     	this.role = role;
     }
     
-    public LocalDateTime getCreatedAt() {
+    public Timestamp getCreatedAt() {
     	return createdAt;
     }
     
-    public void setCreatedAt(LocalDateTime createdAt) {
+    public void setCreatedAt(Timestamp createdAt) {
     	this.createdAt = createdAt;
     }
 

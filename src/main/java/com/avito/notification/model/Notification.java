@@ -2,13 +2,14 @@ package com.avito.notification.model;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.sql.Time;
+import java.sql.Timestamp;
 
 import org.hibernate.annotations.CreationTimestamp;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.*;
-import jakarta.persistence.Entity;
 
 @Entity
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
@@ -27,7 +28,7 @@ public class Notification implements Serializable {
 
     @Column(name = "date")
     @CreationTimestamp
-    private LocalDateTime date;
+    private Timestamp date;
 
     @ManyToOne
     @JoinColumn(name = "author")
@@ -41,11 +42,22 @@ public class Notification implements Serializable {
     private Integer[] rolesTo;
 
     @Column(name = "is_read")
-    private Boolean isRead;
+    private Boolean isRead = false;
 
     @Column(name = "created_at")
     @CreationTimestamp
-    private LocalDateTime createdAt;
+    private Timestamp createdAt;
+
+    public Notification() {
+    }
+
+    public Notification(String title, String description, User author, NotificationType type, Integer[] rolesTo) {
+        this.title = title;
+        this.description = description;
+        this.author = author;
+        this.type = type;
+        this.rolesTo = rolesTo;
+    }
 
     public Integer getId() {
         return id;
@@ -69,15 +81,15 @@ public class Notification implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
-    }
+    }  
 
-    public LocalDateTime getDate() {
+    public Timestamp getDate() {
         return date;
     }
 
-    public void setDate(LocalDateTime date) {
+    public void setDate(Timestamp date) {
         this.date = date;
-    }   
+    }
 
     public User getAuthor() {
         return author;
@@ -111,11 +123,11 @@ public class Notification implements Serializable {
         this.rolesTo = rolesTo;
     }
 
-    public LocalDateTime getCreatedAt() {
+    public Timestamp getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
+    public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
     }
 }

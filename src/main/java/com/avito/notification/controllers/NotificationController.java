@@ -22,35 +22,35 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 @RequestMapping("notification")
 public class NotificationController {
     private final NotificationService notificationService;
+    private final NotificationTypeService notificationTypeService;
     private final UserService userService;
     private final RoleService roleService;
 
-    public NotificationController(NotificationService notificationService, UserService userService, RoleService roleService) {
+    public NotificationController(NotificationService notificationService, UserService userService, RoleService roleService,
+        NotificationTypeService notificationTypeService) {
         this.notificationService = notificationService;
         this.userService = userService;
         this.roleService = roleService;
+        this.notificationTypeService = notificationTypeService;
     }
 
     @PostMapping(value = "/create")
-    public ResponseEntity<?> createRole(@RequestBody ObjectNode objectNode) {
-        // final JsonNode roles_to = new ObjectMapper().readTree(objectNode.toPrettyString()).get("roles_to");
+    public ResponseEntity<?> createNotification(@RequestBody ObjectNode objectNode) {
         String title = objectNode.get("title").asText();
         String description = objectNode.get("description").asText();
-        String author_id = objectNode.get("author").asText();
-        ArrayNode roles_to = (ArrayNode) objectNode.get("roles_to");
+        String authorId = objectNode.get("author").asText();
+        ArrayNode rolesTo = (ArrayNode) objectNode.get("roles_to");
 
-        for (JsonNode jsonNode : roles_to) {
-            System.out.println(roleService.readByRoleName(jsonNode.asText()).getId());
+        Integer[] rolesToInteger = new Integer[rolesTo.size()];
+        for (int i = 0; i < rolesTo.size(); i++) {
+            rolesToInteger[i] = roleService.readByRoleName(rolesTo.get(i).asText()).getId();
         }
         
-        Notification newNotification = new Notification();
+        Notification newNotification = new Notification(title, description, userService.readById(Integer.parseInt(authorId)), notificationTypeService.readById(1), rolesToInteger);
+        notificationService.create(newNotification);
 
-        newNotification.setTitle(title);
-        newNotification.setDescription(description);
-        newNotification.setAuthor(userService.readById(Integer.parseInt(author_id)));
-
-        // newNotification.setRoles_to(roleService.readById(Integer.parseInt(roles_to.get(0).asText())));
-
-        return new ResponseEntity<>(objectNode.get("roles_to"), HttpStatus.CREATED);
+        return new ResponseEntity<>(newNotification, HttpStatus.CREATED);
     }
+
+    
 }

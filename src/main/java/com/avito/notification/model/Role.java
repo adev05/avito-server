@@ -3,6 +3,7 @@ package com.avito.notification.model;
 import java.io.Serializable;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.*;
@@ -20,6 +21,7 @@ public class Role implements Serializable {
     @Column(name = "role_name")
     private String roleName;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "role")
     private List<User> users;
 
