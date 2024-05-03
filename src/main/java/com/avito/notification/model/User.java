@@ -1,24 +1,24 @@
 package com.avito.notification.model;
 
-import java.io.Serializable;
 import java.util.List;
-import java.sql.Time;
 import java.sql.Timestamp;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+// import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.*;
 import jakarta.persistence.Entity;
+import lombok.Data;
 
 
 @Entity
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@Data
+// @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Table(name = "users")
-public class User implements Serializable {
+public class User {
     @Id
     @Column(name="id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,6 +42,14 @@ public class User implements Serializable {
     @JsonIgnore
     @OneToMany(mappedBy = "author")
     private List<Notification> notifications;
+
+    public User() {
+    }
+
+    public User(String username, String password, Role role) {
+        this.username = username;
+        setPasswordHash(password);
+    }
  
     public Integer getId() {
         return id;

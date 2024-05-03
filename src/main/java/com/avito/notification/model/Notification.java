@@ -1,20 +1,22 @@
 package com.avito.notification.model;
 
-import java.io.Serializable;
-import java.time.LocalDateTime;
-import java.sql.Time;
+import java.util.ArrayList;
+import java.util.List;
 import java.sql.Timestamp;
 
 import org.hibernate.annotations.CreationTimestamp;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+// import com.fasterxml.jackson.annotation.JsonIgnore;
+// import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
 @Entity
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@Data
+// @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Table(name = "notifications")
-public class Notification implements Serializable {
+public class Notification {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,9 +40,6 @@ public class Notification implements Serializable {
     @JoinColumn(name = "type")
     private NotificationType type;
 
-    @Column(name = "roles_to")
-    private Integer[] rolesTo;
-
     @Column(name = "is_read")
     private Boolean isRead = false;
 
@@ -48,15 +47,22 @@ public class Notification implements Serializable {
     @CreationTimestamp
     private Timestamp createdAt;
 
+    @ManyToMany
+    @JoinTable(name = "notification_role",
+        joinColumns = @JoinColumn(name = "notification_id"),
+        inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private List<Role> roles = new ArrayList<>();
+
     public Notification() {
     }
 
-    public Notification(String title, String description, User author, NotificationType type, Integer[] rolesTo) {
+    public Notification(String title, String description, User author, NotificationType type, List<Role> roles) {
         this.title = title;
         this.description = description;
         this.author = author;
         this.type = type;
-        this.rolesTo = rolesTo;
+        this.roles = roles;
     }
 
     public Integer getId() {
@@ -115,19 +121,19 @@ public class Notification implements Serializable {
         this.isRead = isRead;
     }
 
-    public Integer[] getRolesTo() {
-        return rolesTo;
-    }
-
-    public void setRolesTo(Integer[] rolesTo) {
-        this.rolesTo = rolesTo;
-    }
-
     public Timestamp getCreatedAt() {
         return createdAt;
     }
 
     public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public List<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRolesTo(List<Role> roles) {
+        this.roles = roles;
     }
 }

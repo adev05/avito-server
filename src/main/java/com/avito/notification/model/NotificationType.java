@@ -7,17 +7,19 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.*;
 import jakarta.persistence.Entity;
+import lombok.Data;
 
 @Entity
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-@Table(name = "notification_types")
+@Data
+// @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@Table(name = "types")
 public class NotificationType implements Serializable {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "type_name")
+    @Column(name = "name")
     private String typeName;
 
     @JsonIgnore

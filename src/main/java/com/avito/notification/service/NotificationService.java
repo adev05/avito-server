@@ -3,6 +3,7 @@ package com.avito.notification.service;
 import java.util.List;
 
 import com.avito.notification.model.Notification;
+import com.avito.notification.model.Role;
 
 public interface NotificationService {
     
@@ -16,7 +17,7 @@ public interface NotificationService {
      * Возвращает список всех имеющихся уведомлений
      * @return список уведомлений
      */
-    List<Notification> readAll();
+    List<Notification> readAll(int offset, int limit);
  
     /**
      * Возвращает уведомление по его id
@@ -24,6 +25,15 @@ public interface NotificationService {
      * @return - объект уведомления с заданным id
      */
     Notification readById(int id);
+
+    // Notification setRoles(Notification notification, List<Role> roles);
+
+    /**
+     * Возвращает уведомление по его id
+     * @param id - id уведомления
+     * @return - объект уведомления с заданным id
+     */
+    List<Notification> readAllByRole(Role role, int offset, int limit);
  
     /**
      * Удаляет тип уведомления с заданным ID

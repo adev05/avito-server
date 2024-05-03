@@ -1,9 +1,9 @@
-DROP TABLE IF EXISTS users, user_roles, notification_types, notifications, notifications_to_roles;
+DROP TABLE IF EXISTS roles, users, types, notifications, notification_role;
 
-CREATE TABLE IF NOT EXISTS user_roles
+CREATE TABLE IF NOT EXISTS roles
 (
     id SERIAL PRIMARY KEY,
-    role_name VARCHAR(31) NOT NULL
+    name VARCHAR(31) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS users
@@ -11,14 +11,14 @@ CREATE TABLE IF NOT EXISTS users
     id SERIAL PRIMARY KEY,
     username VARCHAR(31) NOT NULL,
     password_hash TEXT NOT NULL,
-    role INTEGER NOT NULL REFERENCES user_roles (id),
+    role INTEGER NOT NULL REFERENCES roles (id),
     created_at TIMESTAMP DEFAULT NOW()
 );
 
-CREATE TABLE IF NOT EXISTS notification_types
+CREATE TABLE IF NOT EXISTS types
 (
     id SERIAL PRIMARY KEY,
-    type_name VARCHAR(31) NOT NULL
+    name VARCHAR(31) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS notifications
@@ -28,15 +28,14 @@ CREATE TABLE IF NOT EXISTS notifications
     description TEXT NOT NULL,
     date TIMESTAMP DEFAULT NOW(),
     author INTEGER NOT NULL REFERENCES users (id),
-    type INTEGER NOT NULL REFERENCES notification_types (id),
-    roles_to INTEGER[] NOT NULL,
+    type INTEGER NOT NULL REFERENCES types (id),
     is_read BOOLEAN DEFAULT FALSE,
     created_at TIMESTAMP DEFAULT NOW()
 );
 
-CREATE TABLE IF NOT EXISTS notifications_to_roles
+CREATE TABLE IF NOT EXISTS notification_role
 (
-    id SERIAL PRIMARY KEY,
-    notification INTEGER NOT NULL REFERENCES notifications (id),
-    role INTEGER NOT NULL REFERENCES user_roles (id)
+    notification_id INTEGER NOT NULL REFERENCES notifications (id),
+    role_id INTEGER NOT NULL REFERENCES roles (id),
+    PRIMARY KEY (notification_id, role_id)
 );

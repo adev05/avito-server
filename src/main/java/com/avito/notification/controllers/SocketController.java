@@ -1,20 +1,26 @@
 package com.avito.notification.controllers;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import com.avito.notification.model.Notification;
+import com.avito.notification.model.Role;
 import com.avito.notification.service.NotificationService;
 import com.avito.notification.service.NotificationTypeService;
 import com.avito.notification.service.RoleService;
 import com.avito.notification.service.UserService;
+
 import com.corundumstudio.socketio.HandshakeData;
 import com.corundumstudio.socketio.SocketIONamespace;
 import com.corundumstudio.socketio.SocketIOServer;
 import com.corundumstudio.socketio.listener.ConnectListener;
 import com.corundumstudio.socketio.listener.DataListener;
 import com.corundumstudio.socketio.listener.DisconnectListener;
+
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
@@ -58,12 +64,12 @@ public class SocketController {
             String authorId = data.get("author").asText();
             ArrayNode rolesTo = (ArrayNode) data.get("roles_to");
 
-            Integer[] rolesToInteger = new Integer[rolesTo.size()];
+            List<Role> roles = new ArrayList<>();
             for (int i = 0; i < rolesTo.size(); i++) {
-                rolesToInteger[i] = roleService.readByRoleName(rolesTo.get(i).asText()).getId();
+                roles.add(roleService.readByRoleName(rolesTo.get(i).asText()));
             }
             
-            Notification newNotification = new Notification(title, description, userService.readById(Integer.parseInt(authorId)), notificationTypeService.readById(1), rolesToInteger);
+            Notification newNotification = new Notification(title, description, userService.readById(Integer.parseInt(authorId)), notificationTypeService.readById(1), roles);
             notificationService.create(newNotification);
 
             // Collection<SocketIOClient> allClients = namespace.getAllClients();
